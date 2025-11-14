@@ -1,0 +1,1 @@
+Ceci est un exemple d'utilisation des classes, objets et héritages
