@@ -3,32 +3,47 @@
 
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
-// === Template Class vecteur ===
-template <typename T> // T est le type variable
+class vecteur_exception : public std::runtime_error
+{
+public:
+    explicit vecteur_exception(const std::string &msg)
+        : std::runtime_error(msg.c_str()) {}
+};
+
+//===================================================================
+//  Classe template générique vecteur<T>
+//===================================================================
+template <typename T>
 class vecteur
 {
 public:
     vecteur();
     vecteur(int dim);
     vecteur(int dim, T value);
-    vecteur(const vecteur &); // constructeur de recopie
+    vecteur(const vecteur &other);
     ~vecteur();
 
-    void affiche_vecteur(void);
-    void set_elements(void);
+    void affiche_vecteur() const;
+    void set_elements();
 
     T &operator[](int index);
     const T &operator[](int index) const;
+
     vecteur &operator=(const vecteur &other);
     vecteur operator+(const vecteur &other) const;
     vecteur &operator+=(const vecteur &other);
 
-protected: // passage protected car on veut que ça soit visible par les classes qui héritent
+protected:
     T *elements;
     int dim;
 };
 
+//===================================================================
+//  Classe template vecteur_intelligent<U>
+//  hérite de vecteur<U> – type variable
+//===================================================================
 template <typename U>
 class vecteur_intelligent : public vecteur<U>
 {

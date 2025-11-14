@@ -8,15 +8,15 @@ CXXFLAGS = -Wall -Wextra -std=c++17
 TARGET = programme
 
 # Fichiers source
-SRC = main.cpp
+SRC = main.cpp lib.cpp
 
-# Fichiers objets (générés à partir des sources)
+# Fichiers objets
 OBJ = $(SRC:.cpp=.o)
 
 # Règle par défaut
 all: $(TARGET)
 
-# Compilation de l'exécutable puis suppression des .o
+# Édition de liens
 $(TARGET): $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJ)
 	@echo "Suppression des fichiers objets..."
@@ -26,11 +26,11 @@ $(TARGET): $(OBJ)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Nettoyage manuel
+# Nettoyage
 clean:
 	rm -f $(OBJ) $(TARGET)
 
-# Tout nettoyer et recompiler
+# Rebuild complet
 rebuild: clean all
 
 .PHONY: all clean rebuild
