@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include <algorithm> // pour std::max, std::min
 
 class vecteur_exception : public std::runtime_error
 {
@@ -13,7 +14,7 @@ public:
 };
 
 //===================================================================
-//  Classe template générique vecteur<T>
+// Classe vecteur<T>
 //===================================================================
 template <typename T>
 class vecteur
@@ -35,14 +36,18 @@ public:
     vecteur operator+(const vecteur &other) const;
     vecteur &operator+=(const vecteur &other);
 
+    template <typename U>
+    friend std::ostream &operator<<(std::ostream &, const vecteur<U> &);
+    template <typename U>
+    friend std::istream &operator>>(std::istream &, vecteur<U> &);
+
 protected:
     T *elements;
     int dim;
 };
 
 //===================================================================
-//  Classe template vecteur_intelligent<U>
-//  hérite de vecteur<U> – type variable
+// Classe vecteur_intelligent<U>
 //===================================================================
 template <typename U>
 class vecteur_intelligent : public vecteur<U>
@@ -52,11 +57,15 @@ public:
     vecteur_intelligent(int dim) : vecteur<U>(dim) {}
     vecteur_intelligent(int dim, U value) : vecteur<U>(dim, value) {}
     vecteur_intelligent(const vecteur_intelligent &v) : vecteur<U>(v) {}
-
     ~vecteur_intelligent();
 
     vecteur_intelligent operator+(const vecteur_intelligent &other) const;
     vecteur_intelligent &operator+=(const vecteur_intelligent &other);
+
+    template <typename V>
+    friend std::ostream &operator<<(std::ostream &, const vecteur_intelligent<V> &);
+    template <typename V>
+    friend std::istream &operator>>(std::istream &, vecteur_intelligent<V> &);
 };
 
 #endif // LIB_HPP
